@@ -10,37 +10,40 @@
             <f:facet name="first">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
                 <title>VisualizacaoDados</title>
+                <link rel="stylesheet" type="text/css" href="style1.css"></link>
             </f:facet>
         </h:head>
 
         <h:body>
-
             <p:layout fullPage="true">
-
-                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
-                    Visualização de Dados Gerenciais e de Produção de Gado Leiteiro
-                </p:layoutUnit>
-
-                <!--<p:layoutUnit position="south" size="100" closable="true" collapsible="true">
-                    Footer
-                </p:layoutUnit>-->
-
-                <p:layoutUnit position="west" size="175" header="Left" collapsible="true">
+                   
+            <p:layoutUnit position="north" size="125" resizable="true" closable="true" collapsible="true">
+                <h1 align="center">Visualização de Dados Gerenciais e de Produção de Gado Leiteiro</h1>
+            </p:layoutUnit>
+            
+            <p:layoutUnit position="west" size="245" minSize="40" maxSize="400" collapsible="false">
+                <h:form>
                     <p:menu>
-                        <p:submenu label="Recursos de Visualização">
-                            <p:menuitem value="Produção" url="http://www.primefaces.org/showcase-labs/ui/home.jsf" />
-                            <p:menuitem value="Documentation" url="http://www.primefaces.org/documentation.html" />
+                        <p:submenu label="Principal">
+                            <p:menuitem value="Home" outcome="index"/>
                         </p:submenu>
                         <p:submenu label="Recursos de Visualização">
-                            <p:menuitem value="Demo" url="http://www.primefaces.org/showcase-labs/ui/home.jsf" />
-                            <p:menuitem value="Documentation" url="http://www.primefaces.org/documentation.html" />
+                            <p:menuitem value="Produção" outcome="dashboard_index" />
+                            <p:menuitem value="Produção Quadros" outcome="dashboard_index_1" />
+                            <p:menuitem value="Gerencial" outcome="selectOneMenu" />
+                        </p:submenu>
+                        <p:submenu label="Tabelas">
+                            <p:menuitem value="Produção Animais" outcome="table_animais"/>
+                            <p:menuitem value="Controle Animais" outcome="table_controle_animais"/>
+                            <p:menuitem value="Gerencial" outcome="inputText" />
                         </p:submenu>
                     </p:menu>
-                </p:layoutUnit>
-
-                <p:layoutUnit position="center">
-                    Welcome to PrimeFaces
-                </p:layoutUnit>
+                </h:form>
+            </p:layoutUnit>
+                                
+            <p:layoutUnit position="center">
+                <ui:insert name="source" />
+            </p:layoutUnit>            
 
             </p:layout>
 
@@ -48,4 +51,3 @@
 
     </f:view>
 </html>
-

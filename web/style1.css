@@ -8,6 +8,40 @@ and open the template in the editor.
     Author     : Pedro Ivo
 */
 
-.ui-top, .ui-top .ui-layout, .ui-top .ui-layout-bd, .ui-top .ui-layout-unit {
+.ui-top, .ui-top .ui-layout, .ui-top, .ui-layout-bd, .ui-top .ui-layout-unit{
     background-image: none;
-    background-color: #87B6D9; }
+    background-color: red; 
+}
+
+//h1{
+//    font-weight:bold;
+//    color:green;                
+//}
+h1{
+    color: blue; 
+    text-shadow: 1px 0px 0px black, -1px 0px 0px black, 0px 1px 0px black, 0px -1px 0px black;
+}
+
+header{    
+    background-color: lightgray; 
+    height: 30%; 
+    position: relative; 
+    float: none; 
+    border: solid; 
+    border-width: 1px; 
+    border-color: lightgray;
+}
+
+menu{
+    position: relative; 
+    float: left; 
+    border: solid; 
+    border-width: 1px; 
+    border-color: lightgray; 
+    width: 17.1%; 
+    height: 70%;
+}
+
+footer{
+    position: relative; float: left; width: 82.6%;  border: solid; border-width: 1px; border-color: lightgray; height: 70%;
+}

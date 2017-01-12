@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="index.xhtml">
+    <ui:define name="source">
+        <p:dataTable var="controle" value="#{consumeControles.controles}">
+        <p:column headerText="Nome Animal">
+            <h:outputText value="#{controle.identificadorVaca}" />
+        </p:column>
+
+        <p:column headerText="Percentual Gordura">
+            <h:outputText value="#{controle.percentual_gordura}" />
+        </p:column>
+            
+        <p:column headerText="Percentual Proteina">
+            <h:outputText value="#{controle.percentual_proteina}" />
+        </p:column>
+            
+        <p:column headerText="Produção Leite">
+            <h:outputText value="#{controle.valor_acumulado_leite}" />
+        </p:column>
+            
+        <p:column headerText="CCS Atual">
+            <h:outputText value="#{controle.ccs_atual}" />
+        </p:column>
+            
+        <p:column headerText="CCS Anterior">
+            <h:outputText value="#{controle.ccs_anterior}" />
+        </p:column>
+    </p:dataTable>
+        
+    </ui:define>
+
+</ui:composition>

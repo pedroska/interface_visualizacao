@@ -1,0 +1,15 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="index.xhtml">
+    <ui:define name="source">
+        <p:chart type="line" model="#{areaChart.areaModel}" style="height:300px" />
+        
+        <p:chart type="bar" model="#{barChart.barModel}" style="height:300px"/>
+ 
+        <p:chart type="bar" model="#{barChart.horizontalBarModel}" style="height:300px"/>
+    </ui:define>
+
+</ui:composition>
