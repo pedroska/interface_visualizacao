@@ -1,0 +1,25 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="index.xhtml">
+    <ui:define name="source">
+        <p:dataTable var="nucleo" value="#{consumeGerenciais.nucleos}">
+        <p:column headerText="Nucleo">
+            <h:outputText value="#{nucleo.nome_nucleo}" />
+        </p:column>
+
+        <p:column headerText="Coordenador">
+            <h:outputText value="#{nucleo.nome_coordenador}" />
+        </p:column>
+            
+        <p:column headerText="Consultor">
+            <h:outputText value="#{nucleo.nome_consultor}" />
+        </p:column>
+            
+    </p:dataTable>
+        
+    </ui:define>
+
+</ui:composition>

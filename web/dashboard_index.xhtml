@@ -5,11 +5,15 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="index.xhtml">
     <ui:define name="source">
-        <p:chart type="line" model="#{areaChart.areaModel}" style="height:300px" />
+        <p:chart type="line" model="#{areaChartProducaoRebanhoData.areaModel}" style="height:300px" />
         
         <p:chart type="bar" model="#{barChart.barModel}" style="height:300px"/>
  
         <p:chart type="bar" model="#{barChart.horizontalBarModel}" style="height:300px"/>
+        
+        <p:chart type="metergauge" model="#{meterGaugeChart.meterGaugeModel1}" style="width:400px;height:250px" />
+        
+        <p:chart type="metergauge" model="#{meterGaugeChartCount.meterGaugeModel1}" style="width:400px;height:250px" />
     </ui:define>
 
 </ui:composition>

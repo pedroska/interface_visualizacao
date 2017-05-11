@@ -9,7 +9,7 @@
         <h:head>
             <f:facet name="first">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-                <title>VisualizacaoDados</title>
+                <title>Visualizacao de Dados</title>
                 <link rel="stylesheet" type="text/css" href="style1.css"></link>
             </f:facet>
         </h:head>
@@ -26,15 +26,23 @@
                     <p:menu>
                         <p:submenu label="Principal">
                             <p:menuitem value="Home" outcome="index"/>
+                            <p:menuitem value="Importa Dados" outcome="importa_banco"/>
+                            <p:menuitem value="Infere Dados" outcome="reasoner"/>
                         </p:submenu>
                         <p:submenu label="Recursos de Visualização">
                             <p:menuitem value="Produção" outcome="dashboard_index" />
                             <p:menuitem value="Produção Quadros" outcome="dashboard_index_1" />
-                            <p:menuitem value="Gerencial" outcome="selectOneMenu" />
                         </p:submenu>
                         <p:submenu label="Tabelas">
-                            <p:menuitem value="Produção Animais" outcome="table_animais"/>
                             <p:menuitem value="Controle Animais" outcome="table_controle_animais"/>
+                            <p:menuitem value="Gerencial" outcome="table_gerencial_nucleo" />
+                        </p:submenu>
+                        <p:submenu label="Tabelas (Inferidas)">
+                            <p:menuitem value="Produção Rebanho" outcome="table_producao_rebanho"/>
+                            <p:menuitem value="Gerencial" outcome="table_gerencial_producao" />
+                        </p:submenu>
+                        <p:submenu label="Análise Estrutural">
+                            <p:menuitem value="Produção" outcome="inputText"/>
                             <p:menuitem value="Gerencial" outcome="inputText" />
                         </p:submenu>
                     </p:menu>

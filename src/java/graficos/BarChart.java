@@ -1,14 +1,33 @@
 package graficos;
  
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import javax.annotation.PostConstruct;
 import java.io.Serializable;
+import java.io.StringReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
  
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.HorizontalBarChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
  
 @ManagedBean
 public class BarChart implements Serializable {
@@ -29,84 +48,156 @@ public class BarChart implements Serializable {
         return horizontalBarModel;
     }
  
-    private BarChartModel initBarModel() {
+    private BarChartModel initBarModel() throws ParseException {
         BarChartModel model = new BarChartModel();
  
-        ChartSeries boys = new ChartSeries();
-        boys.setLabel("Boys");
-        boys.set("2004", 120);
-        boys.set("2005", 100);
-        boys.set("2006", 44);
-        boys.set("2007", 150);
-        boys.set("2008", 25);
+        ChartSeries rebanho = new ChartSeries();
+        rebanho.setLabel("Rebanho1964");
+        
+        //Incluindo os dados obtidos no gráfico
+        try {
+            
+            URL url = new URL("http://localhost:8080/visualizacao_semantica_estrutural/resources/producao_rebanho_data");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/xml");
+            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+            String output = "", captura;
+            captura = br.readLine();
+            while (captura != null) {
+		output+=captura;
+                output+="\n";
+                captura = br.readLine();
+            }
+
+            conn.disconnect();
+            
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();  
+            DocumentBuilder builder;  
+            try{
+            builder = factory.newDocumentBuilder();  
+                Document document = builder.parse( new InputSource( new StringReader( output ) ) );
+                
+                NodeList nodes = document.getElementsByTagName("producaoRebanhoData");
+                SimpleDateFormat formatoData = new SimpleDateFormat("yyyy-MM-dd");
+                
+                for(int i = 0; i < nodes.getLength(); i++){
+                        String data = formatoData.format(formatoData.parse(nodes.item(i).getChildNodes().item(0).getTextContent()));
+                        rebanho.set(data, Integer.parseInt(nodes.item(i).getChildNodes().item(2).getTextContent()));
+                }
+            }catch (ParserConfigurationException | SAXException | IOException | DOMException | NumberFormatException e) {
+            }
+            }catch (MalformedURLException e) {
+            }catch (IOException e) {
+            }
+        //ChartSeries vacas = new ChartSeries();
+        //vacas.setLabel("Vacas");
+        //vacas.set("2004", 52);
+        //vacas.set("2005", 60);
+        //vacas.set("2006", 110);
+        //vacas.set("2007", 135);
+        //vacas.set("2008", 120);
  
-        ChartSeries girls = new ChartSeries();
-        girls.setLabel("Girls");
-        girls.set("2004", 52);
-        girls.set("2005", 60);
-        girls.set("2006", 110);
-        girls.set("2007", 135);
-        girls.set("2008", 120);
- 
-        model.addSeries(boys);
-        model.addSeries(girls);
+        model.addSeries(rebanho);
+        //model.addSeries(vacas);
          
         return model;
     }
      
     private void createBarModels() {
         createBarModel();
-        createHorizontalBarModel();
+        try {
+            createHorizontalBarModel();
+        } catch (ParseException ex) {
+            Logger.getLogger(BarChart.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
      
     private void createBarModel() {
-        barModel = initBarModel();
+        try {
+            barModel = initBarModel();
+        } catch (ParseException ex) {
+            Logger.getLogger(BarChart.class.getName()).log(Level.SEVERE, null, ex);
+        }
          
-        barModel.setTitle("Bar Chart");
+        barModel.setTitle("Total Controles");
         barModel.setLegendPosition("ne");
          
         Axis xAxis = barModel.getAxis(AxisType.X);
-        xAxis.setLabel("Gender");
-         
+        xAxis.setLabel("Data");
+        xAxis.setTickAngle(45); 
+        
         Axis yAxis = barModel.getAxis(AxisType.Y);
-        yAxis.setLabel("Births");
+        yAxis.setLabel("Total Controles");
         yAxis.setMin(0);
-        yAxis.setMax(200);
+        yAxis.setMax(50);
     }
      
-    private void createHorizontalBarModel() {
+    private void createHorizontalBarModel() throws ParseException {
         horizontalBarModel = new HorizontalBarChartModel();
  
-        ChartSeries boys = new ChartSeries();
-        boys.setLabel("Boys");
-        boys.set("2004", 50);
-        boys.set("2005", 96);
-        boys.set("2006", 44);
-        boys.set("2007", 55);
-        boys.set("2008", 25);
+        ChartSeries rebanho = new ChartSeries();
+        rebanho.setLabel("Rebanho1964");
  
-        ChartSeries girls = new ChartSeries();
-        girls.setLabel("Girls");
-        girls.set("2004", 52);
-        girls.set("2005", 60);
-        girls.set("2006", 82);
-        girls.set("2007", 35);
-        girls.set("2008", 120);
+        //Incluindo os dados obtidos no gráfico
+        try {
+            
+            URL url = new URL("http://localhost:8080/visualizacao_semantica_estrutural/resources/producao_rebanho_data");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/xml");
+            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+            String output = "", captura;
+            captura = br.readLine();
+            while (captura != null) {
+		output+=captura;
+                output+="\n";
+                captura = br.readLine();
+            }
+
+            conn.disconnect();
+            
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();  
+            DocumentBuilder builder;  
+            try{
+            builder = factory.newDocumentBuilder();  
+                Document document = builder.parse( new InputSource( new StringReader( output ) ) );
+                
+                NodeList nodes = document.getElementsByTagName("producaoRebanhoData");
+                SimpleDateFormat formatoData = new SimpleDateFormat("yyyy-MM-dd");
+                
+                for(int i = 0; i < nodes.getLength(); i++){
+                        String data = formatoData.format(formatoData.parse(nodes.item(i).getChildNodes().item(0).getTextContent()));
+                        rebanho.set(data, Integer.parseInt(nodes.item(i).getChildNodes().item(2).getTextContent()));
+                }
+            }catch (ParserConfigurationException | SAXException | IOException | DOMException | NumberFormatException e) {
+            }
+            }catch (MalformedURLException e) {
+            }catch (IOException e) {
+            }
+        //ChartSeries vacas = new ChartSeries();
+        //vacas.setLabel("Vacas");
+        //vacas.set("2004", 52);
+        //vacas.set("2005", 60);
+        //vacas.set("2006", 82);
+        //vacas.set("2007", 35);
+        //vacas.set("2008", 120);
  
-        horizontalBarModel.addSeries(boys);
-        horizontalBarModel.addSeries(girls);
+        horizontalBarModel.addSeries(rebanho);
+        //horizontalBarModel.addSeries(vacas);
          
-        horizontalBarModel.setTitle("Horizontal and Stacked");
+        horizontalBarModel.setTitle("Total Controles (Horizontal)");
         horizontalBarModel.setLegendPosition("e");
         horizontalBarModel.setStacked(true);
          
         Axis xAxis = horizontalBarModel.getAxis(AxisType.X);
-        xAxis.setLabel("Births");
+        xAxis.setLabel("Total Controles");
         xAxis.setMin(0);
-        xAxis.setMax(200);
+        xAxis.setMax(50);
          
         Axis yAxis = horizontalBarModel.getAxis(AxisType.Y);
-        yAxis.setLabel("Gender");        
+        yAxis.setLabel("Data");
+        yAxis.setTickAngle(45);
     }
  
 }

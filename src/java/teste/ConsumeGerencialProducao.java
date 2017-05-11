@@ -8,7 +8,12 @@ import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -23,39 +28,42 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import thing.ControleLeiteiro;
+import thing.GerencialNucleo;
+import thing.GerencialProducao;
+import thing.ProducaoRebanho;
 
 /**
  *
  * @author Pedro Ivo
  */
-@ManagedBean(name="consumeControles")
+@ManagedBean(name="consumeGerencialProducao")
 @ViewScoped
-public class ConsumeControles implements Serializable {
+public class ConsumeGerencialProducao implements Serializable{
     
-    private ArrayList<ControleLeiteiro> controles;
+    private ArrayList<GerencialProducao> nucleos;
      
     @PostConstruct
     public void init() {
         
-        this.controles = new ArrayList<>();
+        this.nucleos = new ArrayList<>();
         
         try {
-            this.controles = RetornaAnimais();
+            this.nucleos = RetornaGerencialProducao();
         } catch (ParserConfigurationException | SAXException ex) {
-            Logger.getLogger(ConsumeControles.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConsumeGerencialNucleo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
      
-    public ArrayList<ControleLeiteiro> getControles() {
-        return controles;
+    public ArrayList<GerencialProducao> getNucleos() {
+        return nucleos;
     }
     
-    public ArrayList<ControleLeiteiro> RetornaAnimais() throws ParserConfigurationException, SAXException{
+    public ArrayList<GerencialProducao> RetornaGerencialProducao() throws ParserConfigurationException, SAXException{
         
-        ArrayList<ControleLeiteiro> ctrls = new ArrayList<>();
+        ArrayList<GerencialProducao> gers = new ArrayList<>();
         
-        try {    
-            URL url = new URL("http://localhost:8080/visualizacao_semantica_estrutural/resources/controle");
+        try {
+            URL url = new URL("http://localhost:8080/visualizacao_semantica_estrutural/resources/gerencial_producao");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/xml");
@@ -76,20 +84,17 @@ public class ConsumeControles implements Serializable {
                 builder = factory.newDocumentBuilder();  
                 Document document = builder.parse( new InputSource( new StringReader( output ) ) );
                 
-                NodeList nodes = document.getElementsByTagName("controleLeiteiro");
+                NodeList nodes = document.getElementsByTagName("gerencialProducao");
                 
                 for(int i = 0; i < nodes.getLength(); i++){
-                    if(nodes.item(i).getChildNodes().getLength() == 6){
-                        ControleLeiteiro cl = new ControleLeiteiro(
+                        GerencialProducao ger = new GerencialProducao(
+                                nodes.item(i).getChildNodes().item(2).getTextContent(),
+                                nodes.item(i).getChildNodes().item(1).getTextContent(),
                                 nodes.item(i).getChildNodes().item(0).getTextContent(),
-                                Float.parseFloat(nodes.item(i).getChildNodes().item(1).getTextContent()),                            
-                                Float.parseFloat(nodes.item(i).getChildNodes().item(2).getTextContent()),
-                                Float.parseFloat(nodes.item(i).getChildNodes().item(3).getTextContent()),
-                                Integer.parseInt(nodes.item(i).getChildNodes().item(4).getTextContent()),
-                                Integer.parseInt(nodes.item(i).getChildNodes().item(5).getTextContent())
+                                Float.parseFloat(nodes.item(i).getChildNodes().item(3).getTextContent())                           
                         );
-                        ctrls.add(cl);
-                    }
+                        gers.add(ger);
+                    
                 }
                
             }catch (ParserConfigurationException | SAXException | IOException | DOMException | NumberFormatException e) {
@@ -97,7 +102,6 @@ public class ConsumeControles implements Serializable {
             }catch (MalformedURLException e) {
             }catch (IOException e) {
             }        
-        return ctrls;    
+        return gers;    
     }
-    
 }

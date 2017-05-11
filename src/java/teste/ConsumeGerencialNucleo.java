@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package teste;
 
 import java.io.BufferedReader;
@@ -23,39 +28,40 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import thing.ControleLeiteiro;
+import thing.GerencialNucleo;
 
 /**
  *
  * @author Pedro Ivo
  */
-@ManagedBean(name="consumeControles")
+@ManagedBean(name="consumeGerenciais")
 @ViewScoped
-public class ConsumeControles implements Serializable {
+public class ConsumeGerencialNucleo implements Serializable{
     
-    private ArrayList<ControleLeiteiro> controles;
+    private ArrayList<GerencialNucleo> nucleos;
      
     @PostConstruct
     public void init() {
         
-        this.controles = new ArrayList<>();
+        this.nucleos = new ArrayList<>();
         
         try {
-            this.controles = RetornaAnimais();
+            this.nucleos = RetornaNucleos();
         } catch (ParserConfigurationException | SAXException ex) {
-            Logger.getLogger(ConsumeControles.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConsumeGerencialNucleo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
      
-    public ArrayList<ControleLeiteiro> getControles() {
-        return controles;
+    public ArrayList<GerencialNucleo> getNucleos() {
+        return nucleos;
     }
     
-    public ArrayList<ControleLeiteiro> RetornaAnimais() throws ParserConfigurationException, SAXException{
+    public ArrayList<GerencialNucleo> RetornaNucleos() throws ParserConfigurationException, SAXException{
         
-        ArrayList<ControleLeiteiro> ctrls = new ArrayList<>();
+        ArrayList<GerencialNucleo> nucls = new ArrayList<>();
         
         try {    
-            URL url = new URL("http://localhost:8080/visualizacao_semantica_estrutural/resources/controle");
+            URL url = new URL("http://localhost:8080/visualizacao_semantica_estrutural/resources/gerencial");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/xml");
@@ -76,19 +82,16 @@ public class ConsumeControles implements Serializable {
                 builder = factory.newDocumentBuilder();  
                 Document document = builder.parse( new InputSource( new StringReader( output ) ) );
                 
-                NodeList nodes = document.getElementsByTagName("controleLeiteiro");
+                NodeList nodes = document.getElementsByTagName("gerencialNucleo");
                 
                 for(int i = 0; i < nodes.getLength(); i++){
-                    if(nodes.item(i).getChildNodes().getLength() == 6){
-                        ControleLeiteiro cl = new ControleLeiteiro(
-                                nodes.item(i).getChildNodes().item(0).getTextContent(),
-                                Float.parseFloat(nodes.item(i).getChildNodes().item(1).getTextContent()),                            
-                                Float.parseFloat(nodes.item(i).getChildNodes().item(2).getTextContent()),
-                                Float.parseFloat(nodes.item(i).getChildNodes().item(3).getTextContent()),
-                                Integer.parseInt(nodes.item(i).getChildNodes().item(4).getTextContent()),
-                                Integer.parseInt(nodes.item(i).getChildNodes().item(5).getTextContent())
+                    if(nodes.item(i).getChildNodes().getLength() == 3){
+                        GerencialNucleo nuc = new GerencialNucleo(
+                                nodes.item(i).getChildNodes().item(2).getTextContent(),
+                                nodes.item(i).getChildNodes().item(1).getTextContent(),                           
+                                nodes.item(i).getChildNodes().item(0).getTextContent()
                         );
-                        ctrls.add(cl);
+                        nucls.add(nuc);
                     }
                 }
                
@@ -97,7 +100,6 @@ public class ConsumeControles implements Serializable {
             }catch (MalformedURLException e) {
             }catch (IOException e) {
             }        
-        return ctrls;    
+        return nucls;    
     }
-    
 }
