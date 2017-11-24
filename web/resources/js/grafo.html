@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Basic sigma.js example</title>
+  <style type="text/css">
+    body {
+      margin: 0;
+    }
+    #container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+#graph-container {
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      position: absolute;
+    }
+
+.sigma-tooltip {
+      max-width: 240px;
+      max-height: 280px;
+      background-color: rgb(249, 247, 237);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      border-radius: 6px;
+    }
+
+    .sigma-tooltip-header {
+      font-variant: small-caps;
+      font-size: 120%;
+      color: #437356;
+      border-bottom: 1px solid #aac789;
+      padding: 10px;
+    }
+
+    .sigma-tooltip-body {
+      padding: 10px;
+    }
+
+    .sigma-tooltip-body th {
+      color: #999;
+      text-align: left;
+    }
+
+    .sigma-tooltip-footer {
+      padding: 10px;
+      border-top: 1px solid #aac789;
+    }
+
+    .sigma-tooltip > .arrow {
+      border-width: 10px;
+      position: absolute;
+      display: block;
+      width: 0;
+      height: 0;
+      border-color: transparent;
+      border-style: solid;
+    }
+
+    .sigma-tooltip.top {
+      margin-top: -12px;
+    }
+    .sigma-tooltip.top > .arrow {
+      left: 50%;
+      bottom: -10px;
+      margin-left: -10px;
+      border-top-color: rgb(249, 247, 237);
+      border-bottom-width: 0;
+    }
+
+    .sigma-tooltip.bottom {
+      margin-top: 12px;
+    }
+    .sigma-tooltip.bottom > .arrow {
+      left: 50%;
+      top: -10px;
+      margin-left: -10px;
+      border-bottom-color: rgb(249, 247, 237);
+      border-top-width: 0;
+    }
+
+    .sigma-tooltip.left {
+      margin-left: -12px;
+    }
+    .sigma-tooltip.left > .arrow {
+      top: 50%;
+      right: -10px;
+      margin-top: -10px;
+      border-left-color: rgb(249, 247, 237);
+      border-right-width: 0;
+    }
+
+    .sigma-tooltip.right {
+      margin-left: 12px;
+    }
+    .sigma-tooltip.right > .arrow {
+      top: 50%;
+      left: -10px;
+      margin-top: -10px;
+      border-right-color: rgb(249, 247, 237);
+      border-left-width: 0;
+    }
+    #notice {
+      bottom: 1em;
+      right: 1em;
+      position: absolute;
+    }
+    .hidden {
+      display: none;
+    }    
+  </style>
+</head>
+<body>
+  <script src="./sigma.min.js"></script>
+  <script src="./sigma.plugins.dragNodes.min.js"></script>
+  <script src="./sigma.plugins.activeState.min.js"></script>
+  <script src="./sigma.plugins.select.min.js"></script>   
+  <script src="./sigma.plugins.keyboard.min.js"></script> 
+  <script src="./sigma.plugins.tooltips.min.js"></script>
+  <script src="./sigma.renderers.edgeLabels.min.js"></script> 
+  <script src="./sigma.renderers.customEdgeShapes.min.js"></script>
+  <script src="./sigma.renderers.glyphs.min.js"></script>
+  <script src="./sigma.renderers.halo.min.js"></script>
+  <script src="./sigma.renderers.linkurious.min.js"></script>
+  <script src="./mustache.min.js"></script>  
+  <script src="./plugins/supervisor.js"></script>
+  <script src="./plugins/worker.js"></script>
+  <script src="./plugins/sigma.plugins.animate.js"></script>  
+  <script src="./plugins/sigma.layouts.forceLink.min.js"></script>  
+  <div id="container">
+  <div id="graph-container">
+      <div id="notice" class="hidden">layout in progress...</div>
+  </div>
+  </div>
+  <script>
+  /**
+ * This example shows how to use the dragNodes plugin.
+ */
+var s,
+    g = {nodes: [],edges: []};
+
+g.nodes.push({
+      id: '33',
+      label: '33',
+      x: Math.random(),
+      y: Math.random(),
+      size: 1,
+      color: '#000',
+      data: {
+        nomeCompleto: 'Eduardo Sany Laber',
+        nomeCompletoComEnter: 'Eduardo Laber (2)',
+        anoNaRede: '1997',
+        agregador: 'PUC-RJ;2',
+        nivel: '3',
+        image: 'http://buscatextual.cnpq.br/buscatextual/servletrecuperafoto?id=K4791540P4',
+        centralidadeLocal: '0.200806042',
+        centralidadeGlobal: '0.844057277',
+        group: '2',
+        universidade: 'PUC-RJ',
+        gruposUniversidade: 'PUC-RJ2'
+      }
+},
+{
+      id: '35',
+      label: '35',
+      x: Math.random(),
+      y: Math.random(),
+      size: 1,
+      color: '#000',
+      data: {
+        nomeCompleto: 'Ruy Luiz Milidiu',
+        nomeCompletoComEnter: 'Ruy Milidiu (2)',
+        anoNaRede: '1997',
+        agregador: 'PUC-RJ;2',
+        nivel: '3',
+        image: 'http://buscatextual.cnpq.br/buscatextual/servletrecuperafoto?id=K4793220Y6',
+        centralidadeLocal: '0.480961289',
+        centralidadeGlobal: '0.078015311',
+        group: '2',
+        universidade: 'PUC-RJ',
+        gruposUniversidade: 'PUC-RJ2'
+      }
+},
+{
+      id: '44',
+      label: '44',
+      x: Math.random(),
+      y: Math.random(),
+      size: 1,
+      color: '#000',
+      data: {
+        nomeCompleto: 'Arndt von Staa',
+        nomeCompletoComEnter: 'Arndt Staa (2)',
+        anoNaRede: '1976',
+        agregador: 'PUC-RJ;2',
+        nivel: '3',
+        image: 'http://buscatextual.cnpq.br/buscatextual/servletrecuperafoto?id=K4727797Z8',
+        centralidadeLocal: '0.449532905',
+        centralidadeGlobal: '0.294515532',
+        group: '2',
+        universidade: 'PUC-RJ',
+        gruposUniversidade: 'PUC-RJ2'
+      }
+},
+{
+      id: '43',
+      label: '43',
+      x: Math.random(),
+      y: Math.random(),
+      size: 1,
+      color: '#000',
+      data: {
+        nomeCompleto: 'Eduardo Sany Laber',
+        nomeCompletoComEnter: 'Eduardo Laber (2)',
+        anoNaRede: '1997',
+        agregador: 'PUC-RJ;2',
+        nivel: '3',
+        image: 'http://buscatextual.cnpq.br/buscatextual/servletrecuperafoto?id=K4791540P4',
+        centralidadeLocal: '0.200806042',
+        centralidadeGlobal: '0.844057277',
+        group: '2',
+        universidade: 'PUC-RJ',
+        gruposUniversidade: 'PUC-RJ2'
+      }
+},
+{
+      id: '99',
+      label: '99',
+      x: Math.random(),
+      y: Math.random(),
+      size: 1,
+      color: '#0F0',
+      data: {
+        nomeCompleto: 'Phillipe',
+        nomeCompletoComEnter: 'Phillipe',
+        anoNaRede: '1997',
+        agregador: 'UFJF;2',
+        nivel: '3',
+        image: 'http://buscatextual.cnpq.br/buscatextual/servletrecuperafoto?id=K4791540P4',
+        centralidadeLocal: '0.200806042',
+        centralidadeGlobal: '0.844057277',
+        group: '2',
+        universidade: 'UFJF',
+        gruposUniversidade: 'UFJF-RJ2'
+      }
+},
+{
+      id: '100',
+      label: '100',
+      x: Math.random(),
+      y: Math.random(),
+      size: 1,
+      color: '#0F0',
+      data: {
+        nomeCompleto: 'Joao',
+        nomeCompletoComEnter: 'Joao',
+        anoNaRede: '1997',
+        agregador: 'UFJF;2',
+        nivel: '3',
+        image: 'http://buscatextual.cnpq.br/buscatextual/servletrecuperafoto?id=K4791540P4',
+        centralidadeLocal: '0.200806042',
+        centralidadeGlobal: '0.844057277',
+        group: '2',
+        universidade: 'UFJF',
+        gruposUniversidade: 'UFJF-RJ2'
+      }
+},
+{
+      id: '101',
+      label: '101',
+      x: Math.random(),
+      y: Math.random(),
+      size: 1,
+      color: '#0F0',
+      data: {
+        nomeCompleto: 'Joaquim',
+        nomeCompletoComEnter: 'Joaquim',
+        anoNaRede: '1997',
+        agregador: 'UFJF;2',
+        nivel: '3',
+        image: 'http://buscatextual.cnpq.br/buscatextual/servletrecuperafoto?id=K4791540P4',
+        centralidadeLocal: '0.200806042',
+        centralidadeGlobal: '0.844057277',
+        group: '2',
+        universidade: 'UFJF',
+        gruposUniversidade: 'UFJF-RJ2'
+      }
+},
+{
+      id: '102',
+      label: '102',
+      x: Math.random(),
+      y: Math.random(),
+      size: 1,
+      color: '#0FF',
+      data: {
+        nomeCompleto: 'Antonio',
+        nomeCompletoComEnter: 'Antonio',
+        anoNaRede: '1997',
+        agregador: 'UFMG;2',
+        nivel: '3',
+        image: 'http://buscatextual.cnpq.br/buscatextual/servletrecuperafoto?id=K4791540P4',
+        centralidadeLocal: '0.200806042',
+        centralidadeGlobal: '0.844057277',
+        group: '2',
+        universidade: 'UFMG',
+        gruposUniversidade: 'UFMG-MG2'
+      }
+},
+{
+      id: '103',
+      label: '103',
+      x: Math.random(),
+      y: Math.random(),
+      size: 1,
+      color: '#0FF',
+      data: {
+        nomeCompleto: 'Maria',
+        nomeCompletoComEnter: 'Maria',
+        anoNaRede: '1997',
+        agregador: 'UFMG;2',
+        nivel: '3',
+        image: 'http://buscatextual.cnpq.br/buscatextual/servletrecuperafoto?id=K4791540P4',
+        centralidadeLocal: '0.200806042',
+        centralidadeGlobal: '0.844057277',
+        group: '2',
+        universidade: 'UFMG',
+        gruposUniversidade: 'UFMG-MG2'
+      }
+},
+{
+      id: '104',
+      label: '104',
+      x: Math.random(),
+      y: Math.random(),
+      size: 1,
+      color: '#0FF',
+      data: {
+        nomeCompleto: 'Paula',
+        nomeCompletoComEnter: 'Paula',
+        anoNaRede: '1997',
+        agregador: 'UFMG;2',
+        nivel: '3',
+        image: 'http://buscatextual.cnpq.br/buscatextual/servletrecuperafoto?id=K4791540P4',
+        centralidadeLocal: '0.200806042',
+        centralidadeGlobal: '0.844057277',
+        group: '2',
+        universidade: 'UFMG',
+        gruposUniversidade: 'UFMG-MG2'
+      }
+}
+);
+
+    g.edges.push({
+      id: 'e0',
+      label: 'Prod. Bibliografica - 1998 - 1.0',
+      source: '33',
+      target: '35',
+      color: '#000',
+      hover_color: '#FC0',
+      type: 'line',
+      size: 1      
+    },
+	{
+      id: 'e1',
+      label: 'Prod. Bibliografica - 2004 - 0.4592',
+      source: '35',
+      target: '44',
+      color: '#000',
+      hover_color: '#FC0',
+      type: 'line',
+      size: 1      
+    },
+	{
+      id: 'e2',
+      label: 'Prod. Bibliografica - 2004 - 0.4592',
+      source: '44',
+      target: '43',
+      color: '#000',
+      hover_color: '#FC0',
+      type: 'line',
+      size: 1      
+    },    
+	{
+      id: 'e3',
+      label: 'Projeto - 2003 - 1',
+      source: '33',
+      target: '43',
+      color: '#000',
+      hover_color: '#FC0',
+      type: 'line',
+      size: 1      
+    },
+	{
+      id: 'e4',
+      label: 'Orientacao Concluida - 2003 - 1',
+      source: '35',
+      target: '43',
+      color: '#000',
+      hover_color: '#FC0',
+      type: 'line',
+      size: 1      
+    },
+	{
+      id: 'e5',
+      label: 'Orientacao Concluida - 2003 - 1',
+      source: '99',
+      target: '43',
+      color: '#000',
+      hover_color: '#FC0',
+      type: 'line',
+      size: 1      
+    },
+	{
+      id: 'e6',
+      label: 'Orientacao Concluida - 2003 - 1',
+      source: '100',
+      target: '35',
+      color: '#000',
+      hover_color: '#FC0',
+      type: 'line',
+      size: 1      
+    },
+	{
+      id: 'e7',
+      label: 'Orientacao Concluida - 2003 - 1',
+      source: '101',
+      target: '35',
+      color: '#000',
+      hover_color: '#FC0',
+      type: 'line',
+      size: 1      
+    },
+    {
+      id: 'e9',
+      label: 'Orientacao Concluida - 2003 - 1',
+      source: '102',
+      target: '104',
+      color: '#000',
+      hover_color: '#FC0',
+      type: 'line',
+      size: 1      
+    },
+    {
+      id: 'e10',
+      label: 'Orientacao Concluida - 2003 - 1',
+      source: '104',
+      target: '35',
+      color: '#000',
+      hover_color: '#FC0',
+      type: 'line',
+      size: 1      
+    },
+    {
+      id: 'e11',
+      label: 'Orientacao Concluida - 2003 - 1',
+      source: '100',
+      target: '103',
+      color: '#000',
+      hover_color: '#FC0',
+      type: 'line',
+      size: 1      
+    },
+    {
+      id: 'e12',
+      label: 'Orientacao Concluida - 2003 - 1',
+      source: '102',
+      target: '101',
+      color: '#000',
+      hover_color: '#FC0',
+      type: 'line',
+      size: 1      
+    },
+    {
+      id: 'e13',
+      label: 'Orientacao Concluida - 2003 - 1',
+      source: '103',
+      target: '104',
+      color: '#000',
+      hover_color: '#FC0',
+      type: 'line',
+      size: 1      
+    },
+    {
+      id: 'e14',
+      label: 'Orientacao Concluida - 2003 - 1',
+      source: '100',
+      target: '99',
+      color: '#000',
+      hover_color: '#FC0',
+      type: 'line',
+      size: 1      
+    },
+    {
+      id: 'e15',
+      label: 'Orientacao Concluida - 2003 - 1',
+      source: '100',
+      target: '101',
+      color: '#000',
+      hover_color: '#FC0',
+      type: 'line',
+      size: 1      
+    },
+    {
+      id: 'e16',
+      label: 'Orientacao Concluida - 2003 - 1',
+      source: '99',
+      target: '101',
+      color: '#000',
+      hover_color: '#FC0',
+      type: 'line',
+      size: 1      
+    }
+    );
+
+
+sigma.renderers.def = sigma.renderers.canvas;
+
+// Instantiate sigma:
+s = new sigma({
+  graph: g,
+  renderer: {
+    container: document.getElementById('graph-container'),
+    type: 'canvas'
+  },
+  settings: {
+    minNodeSize: 5,
+    maxNodeSize: 5,
+    minEdgeSize: 1,
+    maxEdgeSize: 1,
+    dragNodeStickiness: 0.01,
+    nodeBorderSize: 2,
+    defaultNodeBorderColor: '#000',
+    enableEdgeHovering: true,
+    edgeHoverColor: 'edge',
+    defaultEdgeHoverColor: '#000',
+    edgeHoverSizeRatio: 1,
+    edgeHoverExtremities: true,
+    autoCurveRatio: 2,
+    edgeHoverHighlightNodes: 'circle',
+  }
+});
+
+s.refresh();
+
+
+// Instanciate the ActiveState plugin:
+var activeState = sigma.plugins.activeState(s);
+
+// Initialize the dragNodes plugin:
+var dragListener = sigma.plugins.dragNodes(s, s.renderers[0], activeState);
+
+// Initialize the Select plugin:
+var select = sigma.plugins.select(s, activeState);
+
+// Initialize the Keyboard plugin:
+var keyboard = sigma.plugins.keyboard(s, s.renderers[0]);
+
+var config = {
+  node: [{
+    show: 'hovers',
+    hide: 'hovers',
+    cssClass: 'sigma-tooltip',    
+    position: 'top',
+    autoadjust: true,
+    template:
+    '<div class="arrow"></div>' +
+    ' <div class="sigma-tooltip-header">{{label}}</div>' +
+    '  <div class="sigma-tooltip-body">' +
+    '    <table>' +
+    '      <tr><th>Nome Completo</th> <td>{{data.nomeCompleto}}</td></tr>' +
+    '      <tr><th>Ano na Rede</th> <td>{{data.anoNaRede}}</td></tr>' +
+	'      <tr><th>Centralidade Local</th> <td>{{data.centralidadeLocal}}</td></tr>' +
+	'      <tr><th>Centralidade Global</th> <td>{{data.centralidadeGlobal}}</td></tr>' +	
+	'      <tr><th>Universidade</th> <td>{{data.universidade}}</td></tr>' +
+    '    </table>' +
+    '  </div>' +
+    '  <div class="sigma-tooltip-footer">Number of connections: {{degree}}</div>',
+    renderer: function(node, template) {
+      // The function context is s.graph
+      node.degree = this.degree(node.id);
+
+      // Returns an HTML string:
+      return Mustache.render(template, node);
+
+      // Returns a DOM Element:
+      //var el = document.createElement('div');
+      //return el.innerHTML = Mustache.render(template, node);
+    }
+  }, {
+    show: 'rightClickNode',
+    position: 'right',
+    template:
+    '<div class="arrow"></div>' +
+    ' <div class="sigma-tooltip-header">{{label}}</div>' +
+    '  <div class="sigma-tooltip-body">' +
+    '   <p> Context menu for {{data.name}} </p>' +
+    '  </div>' +
+    ' <div class="sigma-tooltip-footer">Number of connections: {{degree}}</div>',
+    renderer: function(node, template) {
+      node.degree = this.degree(node.id);
+      return Mustache.render(template, node);
+    }
+  }],
+  stage: {
+    template:
+    '<div class="arrow"></div>' +
+    '<div class="sigma-tooltip-header"> Services Analysis </div>'
+  }
+};
+
+
+
+
+// Configure the ForceLink algorithm:
+var fa = sigma.layouts.configForceLink(s, {
+  worker: true,
+  barnesHutOptimize: false,
+  autoStop: true,
+  background: true,
+  easing: 'cubicInOut',
+  alignNodeSiblings: true,
+  nodeSiblingsScale: 1,
+  nodeSiblingsAngleMin: 0.3
+});
+
+// Bind the events:
+fa.bind('start interpolate stop', function(e) {
+  console.log(e.type);
+  var el = document.getElementById('notice');
+  if (e.type === 'start') {
+    el.className = '';
+  }
+  else if (e.type === 'interpolate') {
+    el.className = 'hidden';
+  }
+});
+
+// Start the ForceLink algorithm:
+sigma.layouts.startForceLink();
+
+
+
+
+// Instanciate the tooltips plugin with a Mustache renderer for node tooltips:
+var tooltips = sigma.plugins.tooltips(s, s.renderers[0], config);
+
+tooltips.bind('shown', function(event) {
+  console.log('tooltip shown', event);
+});
+
+tooltips.bind('hidden', function(event) {
+  console.log('tooltip hidden', event);
+});
+
+// Bind the Keyboard plugin to the Select plugin:
+select.bindKeyboard(keyboard);
+
+// Curve parallel edges:
+sigma.canvas.edges.autoCurve(s);
+
+dragListener.bind('startdrag', function(event) {
+  console.log(event);
+});
+dragListener.bind('drag', function(event) {
+  console.log(event);
+});
+dragListener.bind('drop', function(event) {
+  console.log(event);
+});
+dragListener.bind('dragend', function(event) {
+  console.log(event);
+});
+
+// Bind the events:
+s.bind('clickNode doubleClickNode rightClickNode', function(e) {
+  console.log(e.type, e.data.node.label, e.data.captor);
+});
+s.bind('clickEdge doubleClickEdge rightClickEdge', function(e) {
+  console.log(e.type, e.data.edge, e.data.captor);
+});
+s.bind('clickStage doubleClickStage rightClickStage', function(e) {
+  console.log(e.type, e.data.captor);
+});
+s.bind('hovers', function(e) {
+  console.log(e.type, e.data.captor, e.data);
+});
+
+</script>
+</body>
+</html>

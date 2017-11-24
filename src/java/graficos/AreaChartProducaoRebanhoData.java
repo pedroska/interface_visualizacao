@@ -11,7 +11,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
@@ -29,7 +28,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import thing.GerencialProducao;
  
 @ManagedBean
 public class AreaChartProducaoRebanhoData implements Serializable {
@@ -54,7 +52,7 @@ public class AreaChartProducaoRebanhoData implements Serializable {
  
         LineChartSeries rebanho = new LineChartSeries();
         rebanho.setFill(true);
-        rebanho.setLabel("Rebanho1964");
+        rebanho.setLabel("Herd1964");
         
         //Incluindo os dados obtidos no gráfico
         try {
@@ -92,32 +90,21 @@ public class AreaChartProducaoRebanhoData implements Serializable {
             }catch (MalformedURLException e) {
             }catch (IOException e) {
             }
-        
-        
-        //LineChartSeries vacas = new LineChartSeries();
-        //vacas.setFill(true);
-        //vacas.setLabel("Vacas");
-        //vacas.set("2004", 52);
-        //vacas.set("2005", 60);
-        //vacas.set("2006", 110);
-        //vacas.set("2007", 90);
-        //vacas.set("2008", 120);
- 
+
         areaModel.addSeries(rebanho);
         //areaModel.addSeries(vacas);
-         
-        areaModel.setTitle("Produção Rebanhos");
+        
+        areaModel.setTitle("Herd Production");
         areaModel.setLegendPosition("ne");
         areaModel.setStacked(true);
         areaModel.setShowPointLabels(true);
          
-        Axis xAxis = new CategoryAxis("Data");
+        Axis xAxis = new CategoryAxis("Date");
         areaModel.getAxes().put(AxisType.X, xAxis);
         xAxis.setTickAngle(45);
         Axis yAxis = areaModel.getAxis(AxisType.Y);
-        yAxis.setLabel("Leite");
+        yAxis.setLabel("Milk (L)");
         yAxis.setMin(0);
         yAxis.setMax(150000);
-    }
-     
+    }     
 }

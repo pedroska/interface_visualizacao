@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="index.xhtml">
+    <ui:define name="source">
+        <h:form>
+    <p:growl id="msgs" showDetail="true" />
+ 
+    <h:panelGrid columns="2" cellpadding="5"> 
+        <p:outputLabel value="Indivíduo 1:" for="ind1" />
+        <p:autoComplete id="ind1" dropdown="true" maxResults="5" value="#{autoCompleteView.ind1}" completeMethod="#{autoCompleteView.completeText}" />
+        <!--
+        <p:outputLabel value="Relação: " for="itemTip" />
+        <p:autoComplete id="itemTip" value="#{autoCompleteView.property}" completeMethod="#{autoCompleteView.completeProperty}"
+                        var="property" itemLabel="#{property.property}" itemValue="#{property}" forceSelection="true">
+            <f:facet name="itemtip">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <h:outputText value="Display:" />
+                    <h:outputText value="#{property.ind2}" />
+ 
+                    <h:outputText value="Key" />
+                    <h:outputText value="#{property.property}" />
+                </h:panelGrid>
+            </f:facet>
+        </p:autoComplete>
+        -->
+        <p:outputLabel value="Propriedade:" for="prop" />
+        <p:autoComplete id="prop" dropdown="true" maxResults="5" value="#{autoCompleteView.relacao}" completeMethod="#{autoCompleteView.completeText}" />
+        
+        <p:outputLabel value="Indivíduo 2:" for="ind2" />
+        <p:autoComplete id="ind2" dropdown="true" maxResults="5" value="#{autoCompleteView.ind2}" completeMethod="#{autoCompleteView.completeText}" />
+    </h:panelGrid>
+ 
+    <p:commandButton value="Submit" icon="ui-icon-check" update="output msgs" oncomplete="PF('dlg').show()" />
+ 
+    <p:dialog header="Values" resizable="false" showEffect="fade" widgetVar="dlg">
+        <p:panelGrid id="output" columns="2" columnClasses="label, value">
+            <h:outputText value="Indivíduo 1:" />
+            <h:outputText value="#{autoCompleteView.ind1}" />
+ 
+            <h:outputText value="Relação:" />
+            <h:outputText value="#{autoCompleteView.relacao}" />
+ 
+            <h:outputText value="Indivíduo 2:" />
+            <h:outputText value="#{autoCompleteView.ind2}" />
+        </p:panelGrid>
+        
+        <p:commandButton value="Confirm" icon="ui-icon-check" actionListener="#{buttonView.createNewRule(autoCompleteView.ind1,autoCompleteView.relacao,autoCompleteView.ind2)}" 
+                         update="output msgs"/>
+        <!--
+        <p:commandButton value="Confirm" icon="ui-icon-check" actionListener="#{buttonView.buttonAction}" update="output msgs"
+                         />-->
+    </p:dialog>
+</h:form>
+        
+    </ui:define>
+
+</ui:composition>

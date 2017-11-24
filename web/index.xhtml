@@ -7,43 +7,40 @@
 
     <f:view contentType="text/html">
         <h:head>
-            <f:facet name="first">
-                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-                <title>Visualizacao de Dados</title>
-                <link rel="stylesheet" type="text/css" href="style1.css"></link>
-            </f:facet>
+            <ui:include src="/WEB-INF/templates/head.xhtml" />
         </h:head>
 
         <h:body>
             <p:layout fullPage="true">
                    
             <p:layoutUnit position="north" size="125" resizable="true" closable="true" collapsible="true">
-                <h1 align="center">Visualização de Dados Gerenciais e de Produção de Gado Leiteiro</h1>
+                <h1 align="center">Dairy Cattle Production and Managerial Data Visualization</h1>
             </p:layoutUnit>
             
             <p:layoutUnit position="west" size="245" minSize="40" maxSize="400" collapsible="false">
                 <h:form>
                     <p:menu>
-                        <p:submenu label="Principal">
+                        <p:submenu label="Main">
                             <p:menuitem value="Home" outcome="index"/>
-                            <p:menuitem value="Importa Dados" outcome="importa_banco"/>
-                            <p:menuitem value="Infere Dados" outcome="reasoner"/>
+                            <p:menuitem value="Import Data" outcome="importa_banco"/>
+                            <p:menuitem value="Data Inference" outcome="reasoner"/>
                         </p:submenu>
-                        <p:submenu label="Recursos de Visualização">
-                            <p:menuitem value="Produção" outcome="dashboard_index" />
-                            <p:menuitem value="Produção Quadros" outcome="dashboard_index_1" />
+                        <p:submenu label="Visualization Resources">
+                            <p:menuitem value="Production" outcome="dashboard_index" />
+                            <p:menuitem value="Production Dashboard" outcome="dashboard_index_1" />
                         </p:submenu>
-                        <p:submenu label="Tabelas">
-                            <p:menuitem value="Controle Animais" outcome="table_controle_animais"/>
-                            <p:menuitem value="Gerencial" outcome="table_gerencial_nucleo" />
+                        <p:submenu label="Tables">
+                            <p:menuitem value="Dairy Controls" outcome="table_controle_animais"/>
+                            <p:menuitem value="Managerial" outcome="table_gerencial_nucleo" />
                         </p:submenu>
-                        <p:submenu label="Tabelas (Inferidas)">
-                            <p:menuitem value="Produção Rebanho" outcome="table_producao_rebanho"/>
-                            <p:menuitem value="Gerencial" outcome="table_gerencial_producao" />
+                        <p:submenu label="Tables (Inferences)">
+                            <p:menuitem value="Herd Production" outcome="table_producao_rebanho"/>
+                            <p:menuitem value="Managerial" outcome="table_gerencial_producao" />
                         </p:submenu>
-                        <p:submenu label="Análise Estrutural">
-                            <p:menuitem value="Produção" outcome="inputText"/>
-                            <p:menuitem value="Gerencial" outcome="inputText" />
+                        <p:submenu label="Ontology Configuration">
+                            <p:menuitem value="New Rule" outcome="nova_regra"/>
+                            <p:menuitem value="Structure" outcome="inputText.xhtml"/>
+                            <p:menuitem value="Structure Teste" outcome="redeOntologiaTeste.xhtml"/>
                         </p:submenu>
                     </p:menu>
                 </h:form>

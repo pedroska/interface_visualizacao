@@ -52,7 +52,7 @@ public class BarChart implements Serializable {
         BarChartModel model = new BarChartModel();
  
         ChartSeries rebanho = new ChartSeries();
-        rebanho.setLabel("Rebanho1964");
+        rebanho.setLabel("Herd1964");
         
         //Incluindo os dados obtidos no gráfico
         try {
@@ -90,13 +90,6 @@ public class BarChart implements Serializable {
             }catch (MalformedURLException e) {
             }catch (IOException e) {
             }
-        //ChartSeries vacas = new ChartSeries();
-        //vacas.setLabel("Vacas");
-        //vacas.set("2004", 52);
-        //vacas.set("2005", 60);
-        //vacas.set("2006", 110);
-        //vacas.set("2007", 135);
-        //vacas.set("2008", 120);
  
         model.addSeries(rebanho);
         //model.addSeries(vacas);
@@ -120,24 +113,26 @@ public class BarChart implements Serializable {
             Logger.getLogger(BarChart.class.getName()).log(Level.SEVERE, null, ex);
         }
          
-        barModel.setTitle("Total Controles");
+        barModel.setTitle("Total Dairy Controls");
         barModel.setLegendPosition("ne");
          
         Axis xAxis = barModel.getAxis(AxisType.X);
-        xAxis.setLabel("Data");
+        xAxis.setLabel("Date");
         xAxis.setTickAngle(45); 
         
         Axis yAxis = barModel.getAxis(AxisType.Y);
-        yAxis.setLabel("Total Controles");
+        yAxis.setLabel("Total Dairy Controls");
         yAxis.setMin(0);
         yAxis.setMax(50);
+        yAxis.setTickInterval("10");
+        yAxis.setTickFormat("%d");
     }
      
     private void createHorizontalBarModel() throws ParseException {
         horizontalBarModel = new HorizontalBarChartModel();
  
         ChartSeries rebanho = new ChartSeries();
-        rebanho.setLabel("Rebanho1964");
+        rebanho.setLabel("Herd1964");
  
         //Incluindo os dados obtidos no gráfico
         try {
@@ -186,17 +181,18 @@ public class BarChart implements Serializable {
         horizontalBarModel.addSeries(rebanho);
         //horizontalBarModel.addSeries(vacas);
          
-        horizontalBarModel.setTitle("Total Controles (Horizontal)");
+        horizontalBarModel.setTitle("Total Dairy Controls (Horizontal)");
         horizontalBarModel.setLegendPosition("e");
         horizontalBarModel.setStacked(true);
          
         Axis xAxis = horizontalBarModel.getAxis(AxisType.X);
-        xAxis.setLabel("Total Controles");
+        xAxis.setLabel("Total Dairy Controls2222");
         xAxis.setMin(0);
         xAxis.setMax(50);
+        xAxis.setTickFormat("%d");
          
         Axis yAxis = horizontalBarModel.getAxis(AxisType.Y);
-        yAxis.setLabel("Data");
+        yAxis.setLabel("Date");
         yAxis.setTickAngle(45);
     }
  

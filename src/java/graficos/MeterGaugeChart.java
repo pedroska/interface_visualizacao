@@ -101,8 +101,8 @@ public class MeterGaugeChart implements Serializable {
  
     private void createMeterGaugeModels() {
         meterGaugeModel1 = initMeterGaugeModel();
-        meterGaugeModel1.setTitle("Rebanho1964");
-        meterGaugeModel1.setGaugeLabel("Leite");
+        meterGaugeModel1.setTitle("Herd1964");
+        meterGaugeModel1.setGaugeLabel("Milk (L)");
         meterGaugeModel1.setSeriesColors("ff0000,ff8c00,00ff7f");
          
         //meterGaugeModel2 = initMeterGaugeModel();

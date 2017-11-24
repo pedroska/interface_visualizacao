@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Visualizacao de Dados</title>
+                <link rel="stylesheet" type="text/css" href="style1.css"></link>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+            <p:layout fullPage="true">
+                   
+            <p:layoutUnit position="north" size="125" resizable="true" closable="true" collapsible="true">
+                <h1 align="center">Visualização de Dados Gerenciais e de Produção de Gado Leiteiro</h1>
+            </p:layoutUnit>
+            
+            <p:layoutUnit position="west" size="245" minSize="40" maxSize="400" collapsible="false">
+                <h:form>
+                    <p:menu>
+                        <p:submenu label="Principal">
+                            <p:menuitem value="Home" outcome="index"/>
+                            <p:menuitem value="Importa Dados" outcome="importa_banco"/>
+                            <p:menuitem value="Infere Dados" outcome="reasoner"/>
+                        </p:submenu>
+                        <p:submenu label="Recursos de Visualização">
+                            <p:menuitem value="Produção" outcome="dashboard_index" />
+                            <p:menuitem value="Produção Quadros" outcome="dashboard_index_1" />
+                        </p:submenu>
+                        <p:submenu label="Tabelas">
+                            <p:menuitem value="Controle Animais" outcome="table_controle_animais"/>
+                            <p:menuitem value="Gerencial" outcome="table_gerencial_nucleo" />
+                        </p:submenu>
+                        <p:submenu label="Tabelas (Inferidas)">
+                            <p:menuitem value="Produção Rebanho" outcome="table_producao_rebanho"/>
+                            <p:menuitem value="Gerencial" outcome="table_gerencial_producao" />
+                        </p:submenu>
+                        <p:submenu label="Configuração da Ontologia">
+                            <p:menuitem value="Nova Regra" outcome="nova_regra"/>
+                            <p:menuitem value="Estrutura" outcome="/socialNet/redeOntologia.xhtml"/>
+                            <p:menuitem value="Teste" outcome="inputText"/>
+                        </p:submenu>
+                    </p:menu>
+                </h:form>
+            </p:layoutUnit>
+                                
+            <p:layoutUnit position="center">
+                <ui:insert name="source" />
+            </p:layoutUnit>            
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>
