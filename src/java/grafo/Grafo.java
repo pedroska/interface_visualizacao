@@ -16,7 +16,7 @@ import org.xml.sax.SAXException;
 @ManagedBean()
 @ViewScoped
 public class Grafo implements Serializable {    
-
+//tesste
     private String teste;
     
     public Grafo() throws IOException {
@@ -42,7 +42,8 @@ public class Grafo implements Serializable {
         
         //script = linkuriousSampleScriptGenerator();
         //url 1 = estrutura da ontologia, 2 = indivíduos da ontologia
-        script = OntologyGenerator(2);
+        //script = OntologyGenerator(2);
+        script = OntologyGenerator(3);
         
         if (!script.equals("")) {
             RequestContext.getCurrentInstance().execute(script);
